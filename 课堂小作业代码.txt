@@ -1,0 +1,153 @@
+c++
+
+
+
+
+
+#include <iostream>  
+#include <fstream>  
+#include <vector>  
+#include <string>  
+#include <sstream>  
+  
+using namespace std;  
+  
+// 函数声明  
+double add(const vector<double>& nums);  
+double minus(const vector<double>& nums);  
+double multiply(const vector<double>& nums);  
+double divide(const vector<double>& nums);  
+  
+// 计算函数  
+double add(const vector<double>& nums) {  
+    double sum = 0;  
+    for (double num : nums) {  
+        sum += num;  
+    }  
+    return sum;  
+}  
+  
+double minus(const vector<double>& nums) {  
+    if (nums.empty()) return 0;  
+    double first = nums[0];  
+    for (size_t i = 1; i < nums.size(); ++i) {  
+        first -= nums[i];  
+    }  
+    return first;  
+}  
+  
+double multiply(const vector<double>& nums) {  
+    double product = 1;  
+    for (double num : nums) {  
+        product *= num;  
+    }  
+    return product;  
+}  
+  
+double divide(const vector<double>& nums) {  
+    if (nums.size() < 2 || nums[1] == 0) {  
+        cerr << "Error: Invalid operation or division by zero." << endl;  
+        return 0;  
+    }  
+    double dividend = nums[0];  
+    for (size_t i = 1; i < nums.size(); ++i) {  
+        dividend /= nums[i];  
+    }  
+    return dividend;  
+}  
+  
+// 主函数  
+int main(int argc, char* argv[]) {  
+    if (argc < 3) {  
+        cerr << "Usage: " << argv[0] << " <operation> <filename>" << endl;  
+        return 1;  
+    }  
+  
+    string operation = argv[1];  
+    string filename = argv[2];  
+  
+    ifstream file(filename);  
+    if (!file.is_open()) {  
+        cerr << "Error: Unable to open file " << filename << endl;  
+        return 1;  
+    }  
+  
+    vector<double> nums;  
+    string line;  
+    while (getline(file, line)) {  
+        istringstream iss(line);  
+        double num;  
+        if (!(iss >> num)) continue; // 忽略非数字行  
+        nums.push_back(num);  
+    }  
+  
+    double result = 0;  
+    if (operation == "add") {  
+        result = add(nums);  
+    } else if (operation == "minus") {  
+        result = minus(nums);  
+    } else if (operation == "multiply") {  
+        result = multiply(nums);  
+    } else if (operation == "divide") {  
+        result = divide(nums);  
+    } else {  
+        cerr << "Error: Unsupported operation " << operation << endl;  
+        return 1;  
+    }  
+  
+    cout << "Result: " << result << endl;  
+  
+    return 0;  
+}
+
+
+
+
+
+
+
+
+matlab
+
+
+
+% 假设通过某种方式获取了fun和filename（这里为了示例，我们手动设置）  
+% fun = 'add'; % 示例操作  
+% filename = 'data.txt'; % 示例文件名  
+  
+% 实际使用中，可以通过命令行参数获取  
+% 例如使用 inputdlg 或其他GUI方式，但MATLAB命令行参数处理较复杂，通常用于函数  
+% 这里我们模拟从命令行获取参数（实际应用中可能不适用）  
+% fun = strtrim(argv{1}(3:end)); % 假设命令行为 'cal-add filename'，去除前缀'cal-'  
+% filename = argv{2};  
+  
+% 为了示例，我们直接指定  
+fun = 'add';  
+filename = 'data.txt';  
+  
+% 读取文件中的数据  
+fid = fopen(filename, 'r');  
+if fid == -1  
+    error('无法打开文件 %s', filename);  
+end  
+  
+nums = [];  
+while ~feof(fid)  
+    line = fgetl(fid);  
+    % 假设每行只有一个数字，并且已经正确处理了可能的格式问题  
+    num = str2double(line);  
+    if ~isnan(num)  
+        nums = [nums, num];  
+    end  
+end  
+fclose(fid);  
+  
+% 调用计算器函数  
+if isempty(nums)  
+    error('文件中没有有效的数字');  
+end  
+  
+result = calculator(fun, nums);  
+  
+% 显示结果  
+disp(['Result: ', num2str(result)]);
